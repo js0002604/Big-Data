@@ -1,0 +1,29 @@
+// inner join
+A = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+B = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+C = JOIN A BY id, B BY id;
+D = FOREACH C GENERATE A::id,A::name,A::age,B::salary;
+			OR
+D = FOREACH C GENERATE $0,$1,$2,$4;
+Dump D;
+
+//Left Join
+A = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+B = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+C = JOIN A BY id left, B BY id;
+D = FOREACH C GENERATE $0,$1,$2,$4;
+Dump D;
+
+//Right Join
+A = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+B = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+C = JOIN A BY id right, B BY id;
+D = FOREACH C GENERATE $3,$1,$2,$4;
+Dump D;
+
+//Full Outer JOin
+A = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+B = LOAD ' ' Using PigStorage(',') AS (id:int,name:chararray,age:int);
+C = JOIN A BY id full outer, B BY id;
+D = FOREACH C GENERATE (A::id is not null ? A::id : B::id),$1,$2,$4;
+Dump D;

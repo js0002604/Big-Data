@@ -1,0 +1,29 @@
+// Highest Salary
+A = LOAD '/tmp/salary.txt' Using PigStorage(',') AS (id:int,name:chararray,dept_id:int,salary:int);
+B = FOREACH A GENERATE dept_id,salary;
+C = GROUP B BY dept_id;
+D = FOREACH C GENERATE group as d_id,MAX(B.salary) AS max_sal;
+E = JOIN A BY (dept_id,salary), D BY (d_id,max_sal);
+F = FOREACH E GENERATE A::*;
+Dump F;
+
+//Second Highest Salary
+A = LOAD '/tmp/salary.txt' Using PigStorage(',') AS (id:int,name:chararray,dept_id:int,salary:int);
+B = ORDER A BY salary desc;
+C = LIMIT B 2;
+D = ORDER C BY salary;
+E = LIMIT D 1;
+Dump E;
+
+//Second Highest Using Join
+A = LOAD '/tmp/salary.txt' Using PigStorage(',') AS (id:int,name:chararray,dept_id:int,salary:int);
+B = FOREACH A GENERATE salary;
+C = DISTINCT B;
+D = ORDER C BY salary desc;
+E = LIMIT D 2;
+F = ORDER E BY salary;
+G = LIMIT F 1;
+H = JOIN A BY (salary), B BY (salary);
+I = FOREACH H GENERATE $0, $1,$2,$3;
+Dump I;
+				                                                                                                    

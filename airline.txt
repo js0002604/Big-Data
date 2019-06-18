@@ -1,0 +1,3 @@
+A = LOAD '/tmp/airports_mod.dat' Using PigStorage(',') AS (id:int,airport:chararray,city:chararray,country:chararray,tcode:chararray,fcode:chararray,latitude:int,longitude:int,altitude:int,hours:int,DST:chararray,tz:chararray);
+B = GROUP A BY country;
+A = LOAD '/tmp/routes.dat' Using PigStorage AS(',') (airline:chararray,id:int,source_airport:chararray,source_id:int,dest_airport:chararray,dest_id:int,stops:int,equip:chararray);
